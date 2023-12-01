@@ -1,0 +1,52 @@
+- name: installing somethinggggggggg
+  hosts: myserver
+  become: true
+  tasks:
+    - name: installing nginx
+      yum:
+       name: nginx
+       state: present
+
+    - name: starting nginx
+      service:
+       name: nginx
+       state: started
+
+    - name: installing mariadb105-server
+      yum:
+        name: mariadb105-server
+        state: present
+
+    - name: starting mariadb
+      service:
+        name: mariadb
+        state: started
+
+    - name: instaling php-fpm
+      yum: name=php-fpm state=present
+
+    - name: starting php-fpm
+      service: name=php-fpm state=started
+
+      notify: restart nginx
+      notify: restart mariadb 
+      notify: restart php-fpm
+  
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+
+  handlers:
+    - name: restart php-fpm
+      service:
+        name: php-fpm
+        state: restarted
+
+  handlers:
+    - name: restart mariadb
+      service:
+        name: mariadb
+        state: restarted
+

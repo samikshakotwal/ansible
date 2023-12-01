@@ -1,0 +1,8 @@
+---
+- hosts: myserver
+  become: yes
+  tasks:
+    - name: Copy static files to the remote server
+      synchronize:
+        src: /home/ec2-user/new/my_static_app/
+        dest: /var/www/html/

@@ -1,0 +1,21 @@
+- name: filedemo
+  hosts: localhost
+  connection: local
+  become: true
+
+  vars: 
+    mypath: /home/ec2-user/sample.text
+    dirpath: /home/ec2-user/sample
+
+  tasks:
+    - name: create file
+      file: 
+        path: "{{$mypath}}"
+        state: touch 
+
+    - name: create folder
+      file:
+        path: "{{}}"
+        state: directory
+
+

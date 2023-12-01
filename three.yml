@@ -1,0 +1,35 @@
+- name: threetier
+  hosts: all
+  become: true
+  tasks:
+    - name: install nginx
+      yum: name=nginx state=present
+      when: inventory_hostname in groups ['webtier']
+    - name: install php
+      yum: name=php8.1 state=present
+      when: inventory_hostname in groups ['apptier']
+    - name: install php-fpm
+      yum: name=php-fpm  state=present
+      when: inventory_hostname in groups ['apptier']
+    - name: install database
+      yum: name=mariadb105-server state=present
+      when: inventory_hostname in groups ['dbtier']
+
+ 
+
+    - name: starting nginx
+      service:
+        name: nginx
+        state: started
+      when: inventory_hostname in groups ['webtier']
+    - name: starting php
+      service:
+        name: php-fpm
+        state: started
+      when: inventory_hostname in groups ['apptier']
+    - name: starting database
+      service:
+        name: mariadb
+        state: started
+      when: inventory_hostname in groups ['dbtier']
+ 

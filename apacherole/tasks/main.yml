@@ -1,0 +1,13 @@
+---
+# tasks file for apacherole
+
+- name: install httpd
+  yum: name=httpd state=present
+
+- name: start httpd 
+  service: name=httpd state=started
+
+  notify: restart httpd
+  notify: restart php
+  notify: restart mariadb
+

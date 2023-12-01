@@ -1,0 +1,11 @@
+- hosts: myserver
+  tasks:
+  - name: "synchronizing website"
+    synchronize:
+      src: /home/ec2-user/samiksha/sites/
+      dest: /var/www/html/
+      archive: no
+      checksum: yes
+      recursive: yes
+      delete: yes
+    become: no

@@ -1,0 +1,9 @@
+- name: role testing
+  hosts: localhost
+  connection: local
+  become: yes
+  roles:
+    - { role: apacherole }
+    - { role: phprole }
+    - { role: mysqlrole }
+

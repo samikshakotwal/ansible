@@ -1,0 +1,12 @@
+---
+# tasks file for phprole
+
+- name: install php
+  yum: name=php state=present
+
+- name: start php 
+  service: name=php state=started
+
+  notify: restart httpd
+  notify: restart php
+  notify: restart mariadb

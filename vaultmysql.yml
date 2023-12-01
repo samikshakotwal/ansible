@@ -1,0 +1,32 @@
+- name: secret
+  hosts: localhost
+  connection: local
+  become: true
+  vars_files:
+    - mypass.txt
+  tasks:
+    - name: Install Python MySQL Module (PyMySQL for Python 2.7)
+      command: "pip install PyMySQL"
+      args:
+        creates: /usr/lib/python2.7/site-packages/PyMySQL
+
+    - name: install mariadb
+      yum: 
+        name: mariadb105-server 
+        state: present
+
+    - name: start
+      service: name=mariadb state=started
+
+    - name: login mysql
+      mysql_user:
+        login_host: localhost
+        login_password: password 
+        login_user: username
+        user: username
+        password: password
+        login_unix_socket: /var/lib/mysql/mysql.sock
+        check_implicit_admin: yes
+        update_password: always
+        state: present
+    

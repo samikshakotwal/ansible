@@ -1,0 +1,114 @@
+- name: Installing LEMP Stack
+  hosts: myserver
+  become: true
+  tasks:
+    - name: Update packages 
+      yum:
+        name: '*'
+        state: latest
+      when: ansible_distribution == 'Amazon'
+
+
+    - name: Update packages
+      apt:
+        name: '*'
+        state: latest
+      when: ansible_distribution == 'Ubuntu'
+
+ 
+
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+      when: ansible_distribution == 'Ubuntu'
+
+ 
+
+    - name: Start Nginx
+      service:
+        name: nginx
+        state: started
+      when: ansible_distribution == 'Ubuntu'
+
+
+
+    - name: Install Nginx
+      yum:
+        name: nginx
+        state: present
+      when: ansible_distribution == 'Amazon'
+
+
+
+    - name: Start Nginx
+      service:
+        name: nginx
+        state: started
+
+      when: ansible_distribution == 'Amazon'
+
+
+    - name: Install MariaDB (Amazon Linux)
+      yum:
+        name: mariadb105-server
+        state: present
+      when: ansible_distribution == 'Amazon'
+
+ 
+
+    - name: Install MySQL (Ubuntu)
+      apt:
+        name: "{{ 'mysql-server' if ansible_distribution == 'Ubuntu' else '' }}"
+        state: present
+      when: ansible_distribution == 'Ubuntu'
+
+ 
+
+    - name: Start MariaDB (Amazon Linux)
+      service:
+        name: mariadb
+        state: started
+      when: ansible_distribution == 'Amazon'
+
+ 
+
+    - name: Start MySQL (Ubuntu)
+      service:
+        name: mysql
+        state: started
+      when: ansible_distribution == 'Ubuntu'
+
+ 
+
+    - name: Install PHP
+      package:
+        name: "{{ 'php8.1-fpm' if ansible_distribution == 'Ubuntu' else 'php' }}"
+        state: present
+
+ 
+
+    - name: Start PHP-FPM
+      service:
+        name: "{{ 'php8.1-fpm' if ansible_distribution == 'Ubuntu' else 'php-fpm' }}"
+        state: started
+      notify:
+        - restart nginx
+        - restart mysql
+        - restart php-fpm
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+
+ 
+
+    - name: restart mysql
+      service:
+        name: "{{ 'mysql' if ansible_distribution == 'Ubuntu' else 'mariadb' }}"
+        state: restarted
+    - name: restart php8.1-fpm
+      service:
+        name: php-fpm
+        state: restarted

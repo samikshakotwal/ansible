@@ -1,0 +1,5 @@
+---
+# handlers file for phprole
+
+- name: restart php
+  service: name=php state=restarted

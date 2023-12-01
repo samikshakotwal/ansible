@@ -1,0 +1,10 @@
+websites:
+  hosts: myserver
+  become: true
+  vars:
+    domain: welcome.com
+    ansible_user: ec2-user
+    ansible_ssh_private_key_file: ~/.ssh/key1.pem
+    ansible_sudo_pass: pass@1234 
+
+

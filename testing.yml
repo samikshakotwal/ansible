@@ -1,0 +1,24 @@
+- name: testing try blocks
+  become: yes
+  hosts: localhost
+  connection: local
+  tasks:
+    - block:
+       - name: install nginx
+         yum: name=ngix state=present
+       - debug:
+          msg: 'in block'
+
+ 
+
+      rescue:
+       - name: install nginx
+         shell: name=nginx state=present
+       - debug:
+          msg: 'in rescue'
+
+ 
+
+      always:
+        - debug:
+           msg: 'in always'

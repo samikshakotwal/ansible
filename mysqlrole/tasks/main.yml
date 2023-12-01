@@ -1,0 +1,12 @@
+---
+# tasks file for mysqlrole
+
+- name: install mariadb 
+  yum: name=mariadb105-server state=present
+
+- name: start  mariadb
+  service: name=mariadb state=started
+
+  notify: restart httpd
+  notify: restart php8.1-fpm
+  notify: restart mariadb

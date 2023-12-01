@@ -1,0 +1,127 @@
+- name: installing somethinggggggggg
+  hosts: myserver
+  become: true
+  tasks:
+
+    - name: update package
+      yum:
+        name: '*'
+        state: latest
+      when: ansible_distribution== 'Amazon'
+
+    - name: update package
+      apt:
+        name: '*'
+        state: latest
+      when: ansible_distribution== 'Ubuntu'
+
+    - name: installing nginx
+      yum:
+        name: nginx
+        state: present
+
+      when: ansible_distribution== 'Amazon'
+
+
+    - name: instaling nginx
+      apt:
+       name: nginx
+       state: present
+
+      when: ansible_distribution== 'ubuntu'
+
+
+    - name: starting nginx
+      service:
+        name: nginx
+        state: started
+
+    - name: instlling mariadb105-server
+      yum:
+        name: mariadb105-server
+        state: present
+      when: ansible_distribution== 'Amazon'
+
+    - name: installing mysql
+      apt:
+        state: present
+      when: ansible_distribution== 'Ubuntu'
+
+    - name: starting mariadb
+      service:
+        name: mariadb
+        state: started
+      when: ansible_distribution== 'Amazon'
+
+    - name: starting mysql
+      service:
+        name: mysql
+        state: started
+      when: ansible_distribution== 'Ubuntu'
+
+    - name: insaling php
+      yum: name=php state=present
+      when: ansible_distribution== 'Amazon'
+
+    - name: intaling php
+      apt: name=php state=present
+      when: ansible_distribution== 'Ubuntu'
+
+    - name: insaling php-fpm
+      yum: name=php-fpm state=present
+      when: ansible_distribution== 'Amazon'
+    
+    - name: intaling php8.1-fpm
+      apt: name=php8.1-fpm state=present
+      when: ansible_distribution== 'Ubuntu'
+
+    - name: starting php-fpm
+      service: name=php-fpm state=started
+      when: ansible_distribution== 'Amazon'
+
+    - name: starting php8.1-fpm
+      service: name=php8.1-fpm state=started
+      when: ansible_distribution == 'Ubuntu'
+
+      notify: ['restart nginx', 'restart mariadb', 'restart php-fpm']
+      when: ansible_distribution== 'Amazon'
+
+      notify: ['restart nginx', 'restart mariadb', 'restart php-fpm']
+      when: ansible_distribution == 'Ubuntu'
+
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+      when: ansible_distribution== 'Amazon'
+
+    - name: restart php-fpm
+      service:
+        name: php-fpm
+        state: restarted
+      when: ansible_distribution== 'Amazon'
+
+    - name: restart mariadb
+      service:
+        name: mariadb
+        state: restarted
+      when: ansible_distribution== 'Amazon'
+
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: restart php8.1-fpm
+      service:
+        name: php-fpm
+        state: restarted
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: restart mysql
+      service:
+        name: mariadb
+        state: restarted
+      when: ansible_distribution == 'Ubuntu'
